@@ -32,6 +32,13 @@ namespace CinemaAPI
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo{ Title = "Cinema API", Version = "v1" }));
             services.AddDbContext<CinemaDbContext>(options => options.UseNpgsql(Configuration.GetConnectionString("CinemaConnection")));
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IMovieRepository, MovieRepository>();
+            services.AddTransient<IScheduleRepository, ScheduleRepository>();
+            services.AddTransient<IReservationRepository, ReservationRepository>();
+            services.AddTransient<ISeatRepository, SeatRepository>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

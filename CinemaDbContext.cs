@@ -15,6 +15,5 @@ namespace CinemaAPI
         public DbSet<Reservation> Reservations {get; set;}
         public DbSet<Schedule> Schedules {get;set;}
         public DbSet<Seat> Seats {get;set;}
-        public DbSet<ReservedSeat> ReservedSeats {get;set;}
     }
 }

@@ -14,6 +14,7 @@ namespace Models
         public int ScheduleId {get;set;}
         public Schedule Schedule {get;set;}
 
-        public virtual List<ReservedSeat> Seats {get;set;}
+        public int SeatId {get; set;}
+        public Seat Seat {get;set;}
     }
 }

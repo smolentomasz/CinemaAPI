@@ -24,18 +24,18 @@ namespace CinemaAPI.Controllers
         }
         //ADD User
         [HttpPost("/api/users/register")]
-        public IActionResult Post([FromBody]CreateUserRequest createStop)
+        public IActionResult Post([FromBody]CreateUserRequest createUser)
         {
-        if(createStop.Name.Equals("") || createStop.Surname.Equals("") || createStop.Email.Equals("") || createStop.Password.Equals("")){
+        if(createUser.Name.Equals("") || createUser.Surname.Equals("") || createUser.Email.Equals("") || createUser.Password.Equals("")){
             return BadRequest("Missing or invalid data!"); 
         }
         else{
-            if(userRepository.FindByEmail(createStop.Email))
+            if(userRepository.FindByEmail(createUser.Email))
                 return Conflict("User with this email is existing in database!");
             else{
-               createStop.Password = BCryptUtilities.encodePassword(createStop.Password);
+               createUser.Password = BCryptUtilities.encodePassword(createUser.Password);
 
-               return Ok(userRepository.Create(createStop.ReturnUser()));
+               return Ok(userRepository.Create(createUser.ReturnUser()));
             }
         }
         }

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace CinemaAPI.Migrations
@@ -16,7 +15,7 @@ namespace CinemaAPI.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: false),
-                    MoviePoster = table.Column<byte[]>(nullable: false),
+                    MoviePoster = table.Column<string>(nullable: false),
                     Duration = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -82,7 +81,8 @@ namespace CinemaAPI.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     Paid = table.Column<int>(nullable: false),
-                    ScheduleId = table.Column<int>(nullable: false)
+                    ScheduleId = table.Column<int>(nullable: false),
+                    SeatId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,28 +93,8 @@ namespace CinemaAPI.Migrations
                         principalTable: "Schedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ReservedSeats",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    SeatId = table.Column<int>(nullable: false),
-                    ReservationId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReservedSeats", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ReservedSeats_Reservations_ReservationId",
-                        column: x => x.ReservationId,
-                        principalTable: "Reservations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ReservedSeats_Seats_SeatId",
+                        name: "FK_Reservations_Seats_SeatId",
                         column: x => x.SeatId,
                         principalTable: "Seats",
                         principalColumn: "Id",
@@ -127,13 +107,8 @@ namespace CinemaAPI.Migrations
                 column: "ScheduleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ReservedSeats_ReservationId",
-                table: "ReservedSeats",
-                column: "ReservationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReservedSeats_SeatId",
-                table: "ReservedSeats",
+                name: "IX_Reservations_SeatId",
+                table: "Reservations",
                 column: "SeatId");
 
             migrationBuilder.CreateIndex(
@@ -145,19 +120,16 @@ namespace CinemaAPI.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ReservedSeats");
+                name: "Reservations");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Seats");
-
-            migrationBuilder.DropTable(
-                name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Movies");
