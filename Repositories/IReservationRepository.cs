@@ -9,6 +9,7 @@ namespace Repositories
         Reservation Create(Reservation reservation);
         void Delete(string id);
         bool FindExistingReservation(string id);
+        bool FindExistingReservation(int scheduleId, int seat);
         List<Reservation> GetListByDate(string date);
     }
 }

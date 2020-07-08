@@ -48,6 +48,7 @@ namespace CinemaAPI.Migrations
             modelBuilder.Entity("Models.Reservation", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<int>("Paid")
@@ -59,11 +60,16 @@ namespace CinemaAPI.Migrations
                     b.Property<int>("SeatId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ScheduleId");
 
                     b.HasIndex("SeatId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservations");
                 });
@@ -154,6 +160,12 @@ namespace CinemaAPI.Migrations
                     b.HasOne("Models.Seat", "Seat")
                         .WithMany("Reservations")
                         .HasForeignKey("SeatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.User", "User")
+                        .WithMany("Reservations")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

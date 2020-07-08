@@ -9,6 +9,8 @@ namespace Models
         
         public List<int> SeatNumbers {get;set;}
 
+        public int UserId {get;set;}
+
         public CreateReservationRequest(){
 
         }

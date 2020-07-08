@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repositories;
@@ -19,6 +20,7 @@ namespace Controllers
         public IActionResult GetList(){
             return Ok(scheduleRepository.GetList());
         }
+        [Authorize]
         [HttpPost("/api/schedule")]
         public IActionResult AddNewSchedule([FromBody]CreateScheduleRequest newSchedule){
             if(newSchedule.Date.Equals("") || newSchedule.Time.Equals("") || newSchedule.MovieId.Equals("")){

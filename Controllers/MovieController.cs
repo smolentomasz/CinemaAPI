@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repositories;
@@ -18,6 +19,7 @@ namespace CinemaAPI.Controllers
         public IActionResult GetList(){
             return Ok(movieRepository.GetList());
         }
+        [Authorize]
         [HttpPost("/api/movies/")]
         public IActionResult AddNewMovie([FromBody]CreateMovieRequest createMovie){
             if(createMovie.Name.Equals("") || createMovie.Description.Equals("") || createMovie.MoviePoster.Equals("") || createMovie.Duration.Equals("")){

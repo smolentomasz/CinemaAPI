@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CinemaAPI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Models;
 
 namespace Repositories
@@ -9,8 +10,10 @@ namespace Repositories
     public class ReservationRepository : IReservationRepository
     {
         private readonly CinemaDbContext _context;
+         
         public ReservationRepository(CinemaDbContext context){
             _context = context;
+           
         }
         public Reservation Create(Reservation reservation)
         {
@@ -34,14 +37,22 @@ namespace Repositories
                 return false;   
         }
 
+        public bool FindExistingReservation(int schedule, int seat)
+        {
+            if(_context.Reservations.ToList().Any(a => a.ScheduleId.Equals(schedule) && a.SeatId.Equals(seat)))
+                return true; 
+            else
+                return false;
+        }
+
         public List<Reservation> GetList()
         {
-            return _context.Reservations.Include("Schedule").Include("Seat").Include(b => b.Schedule.Movie).ToList();
+            return _context.Reservations.Include("Schedule").Include("Seat").Include("User").Include(b => b.Schedule.Movie).ToList();
         }
 
         public List<Reservation> GetListByDate(string date)
         {
-            return (List<Reservation>)_context.Reservations.Include("Schedule").Include("Seat").Where(a => a.Schedule.Date.Equals(date));
+            return _context.Reservations.Include("Schedule").Include("Seat").Include("User").Include(b => b.Schedule.Movie).Where(a => a.Schedule.Date.Equals(date)).ToList();
         }
     }
 }

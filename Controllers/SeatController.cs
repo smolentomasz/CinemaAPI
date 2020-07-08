@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repositories;
@@ -26,6 +27,8 @@ namespace Controllers
             else
                 return Conflict("Seat with this number doesn't exist in database!");
         }
+        
+        [Authorize]
         [HttpPost("/api/seat")]
         public IActionResult AddNewSeat([FromBody]CreateSeatRequest newSeat){
             if(newSeat.SeatNumber.Equals("") || newSeat.SeatRow.Equals("")){

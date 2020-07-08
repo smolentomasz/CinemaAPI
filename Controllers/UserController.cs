@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repositories;
+using Microsoft.Extensions.Options;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CinemaAPI.Controllers
 {
@@ -18,6 +21,7 @@ namespace CinemaAPI.Controllers
 
         }
         //GET all users
+        [Authorize]
         [HttpGet("/api/users")]
         public IActionResult GetList(){
             return Ok(userRepository.GetList());
@@ -43,19 +47,21 @@ namespace CinemaAPI.Controllers
         [HttpPost("/api/users/login")]
         public IActionResult Post([FromHeader(Name ="Login")]string email, [FromHeader(Name ="Password")]string password){
             if(userRepository.FindByEmail(email)){
-                User loginUser = userRepository.GetUserByEmail(email);
-                if(BCryptUtilities.passwordMatch(password, loginUser.Password)){
-                    return Ok("Poprawnie zalogowano!");
-                }
+                User inUser = userRepository.GetUserByEmail(email);
+                 if(BCryptUtilities.passwordMatch(password, inUser.Password)){
+                    UserToken loginUser = userRepository.GetUserTokenByEmail(email, password);
+                    return Ok(loginUser);
+                 }
                 else{
-                    return Unauthorized();
+                    return Unauthorized("Password is not matching!");
                 }
+                
             }
             else{
                 return BadRequest("User with this login doesn't exist in database!");
             }
         }
-
+        [Authorize]
         [HttpDelete("/api/users/{email}")]
         public IActionResult Delete(string email){
             if(userRepository.FindByEmail(email)){
@@ -66,7 +72,7 @@ namespace CinemaAPI.Controllers
                 return BadRequest("User with this login doesn't exist in database!");
             }
         }
-
+        [Authorize]
         [HttpPut("/api/users/{email}")]
         public IActionResult Update([FromBody]User user, string email){
              if(userRepository.FindByEmail(email)){

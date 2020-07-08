@@ -82,6 +82,7 @@ namespace CinemaAPI.Migrations
                     Id = table.Column<string>(nullable: false),
                     Paid = table.Column<int>(nullable: false),
                     ScheduleId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     SeatId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -99,6 +100,12 @@ namespace CinemaAPI.Migrations
                         principalTable: "Seats",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reservations_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -112,6 +119,11 @@ namespace CinemaAPI.Migrations
                 column: "SeatId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reservations_UserId",
+                table: "Reservations",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Schedules_MovieId",
                 table: "Schedules",
                 column: "MovieId");
@@ -123,13 +135,13 @@ namespace CinemaAPI.Migrations
                 name: "Reservations");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Schedules");
 
             migrationBuilder.DropTable(
                 name: "Seats");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Movies");
