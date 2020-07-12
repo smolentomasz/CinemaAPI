@@ -17,7 +17,7 @@ namespace Models
                 Name = this.Name,
                 Surname = this.Surname,
                 Email = this.Email,
-                UserType = this.UserType,
+                UserType = "STANDARD",
                 Password = this.Password
             };
 

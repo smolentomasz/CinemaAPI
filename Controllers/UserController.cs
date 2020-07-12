@@ -7,6 +7,7 @@ using Repositories;
 using Microsoft.Extensions.Options;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace CinemaAPI.Controllers
 {
@@ -49,8 +50,9 @@ namespace CinemaAPI.Controllers
             if(userRepository.FindByEmail(email)){
                 User inUser = userRepository.GetUserByEmail(email);
                  if(BCryptUtilities.passwordMatch(password, inUser.Password)){
-                    UserToken loginUser = userRepository.GetUserTokenByEmail(email, password);
-                    return Ok(loginUser);
+                    UserToken loginUser = userRepository.GetUserTokenByEmail(email, inUser.UserType, inUser.Name, inUser.Surname);
+                    Token token = new Token(loginUser.Token);
+                    return Ok(token);
                  }
                 else{
                     return Unauthorized("Password is not matching!");
