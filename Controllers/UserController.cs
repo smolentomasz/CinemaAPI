@@ -68,7 +68,7 @@ namespace CinemaAPI.Controllers
         public IActionResult Delete(string email){
             if(userRepository.FindByEmail(email)){
                 userRepository.Delete(email);
-                return Ok();
+                return Ok(new ApiResponse("Deleted successfully!", Ok()));
             }
             else{
                 return BadRequest("User with this login doesn't exist in database!");
