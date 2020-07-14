@@ -76,13 +76,19 @@ namespace CinemaAPI.Controllers
         }
         [Authorize]
         [HttpPut("/api/users/{email}")]
-        public IActionResult Update([FromBody]User user, string email){
+        public IActionResult Update([FromBody]CreateUpdateUserRequest user, string email){
              if(userRepository.FindByEmail(email)){
                 User editedUser  = userRepository.GetUserByEmail(email);
-                editedUser.Password = BCryptUtilities.encodePassword(editedUser.Password);
-                editedUser.Name = user.Name;
-                editedUser.Surname = user.Surname;
-                return Ok(userRepository.Update(editedUser));
+                if(BCryptUtilities.passwordMatch(user.OldPassword, editedUser.Password)){
+                    editedUser.Password = BCryptUtilities.encodePassword(user.NewPassword);
+                    editedUser.Name = user.Name;
+                    editedUser.Surname = user.Surname;
+                    return Ok(userRepository.Update(editedUser));
+                }
+                else{
+                    return BadRequest("Passwords don't match!");
+                }
+                
              }
              else{
                 return BadRequest("User with this login doesn't exist in database!");

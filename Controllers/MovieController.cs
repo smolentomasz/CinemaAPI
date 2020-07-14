@@ -1,7 +1,11 @@
+using System.Net.Http.Headers;
+using System.IO;
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 using Repositories;
+using Newtonsoft.Json.Linq;
 
 namespace CinemaAPI.Controllers
 {
@@ -20,18 +24,44 @@ namespace CinemaAPI.Controllers
             return Ok(movieRepository.GetList());
         }
         [Authorize]
-        [HttpPost("/api/movies/")]
-        public IActionResult AddNewMovie([FromBody]CreateMovieRequest createMovie){
-            if(createMovie.Name.Equals("") || createMovie.Description.Equals("") || createMovie.MoviePoster.Equals("") || createMovie.Duration.Equals("")){
-                return BadRequest("Missing or invalid data!"); 
-            }
+        [HttpPost("/api/movies/"), DisableRequestSizeLimit]
+        public IActionResult AddNewMovie(){
+
+            var detailsDecode = JObject.Parse(Request.Form["movieDetails"]);
+
+            string filmName = detailsDecode["name"].ToString();
+            string filmDescription = detailsDecode["description"].ToString();
+            int filmDuration = Int32.Parse(detailsDecode["duration"].ToString());
+
+            if(movieRepository.FindByName(filmName))
+                return Conflict("Movie is existing in database!");
             else{
-                if(movieRepository.FindByName(createMovie.Name))
-                    return Conflict("Movie is existing in database!");
-                else
-                    return Ok(movieRepository.Create(createMovie.returnMovie()));
+                var file = Request.Form.Files[0];
+                var folderName = Path.Combine("Resources","Img");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+
+                if(file.Length > 0){
+                    var fullPath = Path.Combine(pathToSave, file.FileName);
+
+                    using(var stream = new FileStream(fullPath, FileMode.Create)){
+                        file.CopyTo(stream);
+                    }
+
+                    var filmDetails = new CreateMovieRequest{
+                        Name = filmName,
+                        Description = filmDescription,
+                        Duration = filmDuration,
+                        MoviePoster = fullPath
+                    };
+                    return Ok(movieRepository.Create(filmDetails.returnMovie()));
+                }
+                else{
+                    return BadRequest();
+                }
             }
         }
+        
         [HttpGet("/api/movies/name")]
         public IActionResult GetMovieByName(string name){
             if(movieRepository.FindByName(name)){
