@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -19,6 +20,11 @@ namespace Controllers
         [HttpGet("/api/schedule")]
         public IActionResult GetList(){
             return Ok(scheduleRepository.GetList());
+        }
+        [HttpGet("/api/schedule/{id}")]
+        public IActionResult GetListByMovie(string id){
+            int movieId = Int32.Parse(id);
+            return Ok(scheduleRepository.GetListByMovie(movieId));
         }
         [Authorize]
         [HttpPost("/api/schedule")]

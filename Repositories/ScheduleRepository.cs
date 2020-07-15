@@ -31,5 +31,10 @@ namespace Repositories
         {
             return _context.Schedules.Include("Movie").ToList();
         }
+
+        public List<Schedule> GetListByMovie(int movieId)
+        {
+            return _context.Schedules.Where(a => a.MovieId == movieId).ToList();
+        }
     }
 }

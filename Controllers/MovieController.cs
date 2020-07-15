@@ -43,6 +43,7 @@ namespace CinemaAPI.Controllers
 
                 if(file.Length > 0){
                     var fullPath = Path.Combine(pathToSave, file.FileName);
+                    var dbPath = Path.Combine(folderName,file.FileName);
 
                     using(var stream = new FileStream(fullPath, FileMode.Create)){
                         file.CopyTo(stream);
@@ -52,7 +53,7 @@ namespace CinemaAPI.Controllers
                         Name = filmName,
                         Description = filmDescription,
                         Duration = filmDuration,
-                        MoviePoster = fullPath
+                        MoviePoster = dbPath
                     };
                     return Ok(movieRepository.Create(filmDetails.returnMovie()));
                 }
@@ -70,7 +71,6 @@ namespace CinemaAPI.Controllers
             else{
                 return BadRequest("Movie with this title doesn't exist in database!");
             }
-        }
-        
+        }        
     }
 }
