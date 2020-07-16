@@ -50,7 +50,7 @@ namespace CinemaAPI.Controllers
             if(userRepository.FindByEmail(email)){
                 User inUser = userRepository.GetUserByEmail(email);
                  if(BCryptUtilities.passwordMatch(password, inUser.Password)){
-                    UserToken loginUser = userRepository.GetUserTokenByEmail(email, inUser.UserType, inUser.Name, inUser.Surname);
+                    UserToken loginUser = userRepository.GetUserTokenByEmail(email, inUser.UserType, inUser.Name, inUser.Surname, inUser.Id.ToString());
                     Token token = new Token(loginUser.Token);
                     return Ok(token);
                  }
@@ -68,7 +68,7 @@ namespace CinemaAPI.Controllers
         public IActionResult Delete(string email){
             if(userRepository.FindByEmail(email)){
                 userRepository.Delete(email);
-                return Ok(new ApiResponse("Deleted successfully!", Ok()));
+                return Ok(new ApiResponse("Deleted successfully!"));
             }
             else{
                 return BadRequest("User with this login doesn't exist in database!");

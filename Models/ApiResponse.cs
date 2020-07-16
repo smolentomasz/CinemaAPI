@@ -6,7 +6,7 @@ namespace Models
     {
         public string responseMessage {get;set;}
 
-        public ApiResponse(string responseMessage, IActionResult responseResult){
+        public ApiResponse(string responseMessage){
             this.responseMessage = responseMessage;
         }
     }

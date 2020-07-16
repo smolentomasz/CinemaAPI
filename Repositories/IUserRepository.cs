@@ -11,7 +11,7 @@ namespace Repositories
         User Update(User user);
         void Delete(string login);
         bool FindByEmail(string email);
-        UserToken GetUserTokenByEmail(string email,string password, string name, string surname);
+        UserToken GetUserTokenByEmail(string email, string password, string name, string surname, string id);
         User GetUserByEmail(string email);
     }
 }

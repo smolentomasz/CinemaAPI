@@ -10,6 +10,6 @@ namespace Repositories
         void Delete(string id);
         bool FindExistingReservation(string id);
         bool FindExistingReservation(int scheduleId, int seat);
-        List<Reservation> GetListByDate(string date);
+        List<Reservation> GetListBySeance(int seanceId);
     }
 }

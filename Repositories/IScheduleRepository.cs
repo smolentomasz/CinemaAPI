@@ -8,7 +8,8 @@ namespace Repositories
         List<Schedule> GetList();
         Schedule Create(Schedule schedule);
         bool FindExistingSchedule(string date, string time);
-
         List<Schedule> GetListByMovie(int movieId);
+
+        Schedule GetScheduleById(int scheduleId);
     }
 }

@@ -41,7 +41,7 @@ namespace Repositories
 
         public List<Seat> GetList()
         {
-            return _context.Seats.ToList();
+            return _context.Seats.OrderBy(s => s.Id).ToList();
         }
     }
 }

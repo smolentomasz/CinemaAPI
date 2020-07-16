@@ -18,7 +18,6 @@ namespace Controllers
         {
             this.reservationRepository = reservationRepository;
         }
-        [Authorize]
         [HttpGet("/api/reservations")]
         public IActionResult GetList(){
             return Ok(reservationRepository.GetList());
@@ -43,7 +42,8 @@ namespace Controllers
                 }
                 
             }
-            return Ok("Added records to database!");
+            ApiResponse response = new ApiResponse("Added records to database!");
+            return Ok(response);
         }
         [Authorize]
         [HttpDelete("/api/reservations/{id}")]
@@ -58,24 +58,11 @@ namespace Controllers
             
         }
         [Authorize]
-        [HttpGet("/api/reservations/{date}")]
-        public IActionResult GetReservationsByDate(string date){
-            DateTime oDate = DateTime.Parse(date);
-            StringBuilder dateBuilder  = new StringBuilder();
-
-            if(oDate.Day < 10)
-                dateBuilder.Append("0" + oDate.Day  + "/");
-            else
-                dateBuilder.Append(oDate.Day  + "/");
-            if(oDate.Month < 10)
-                dateBuilder.Append("0" + oDate.Month  + "/");
-            else
-                dateBuilder.Append(oDate.Month  + "/");
-
-            dateBuilder.Append(oDate.Year);
-
-            //return Ok(dateBuilder.ToString());
-            return Ok(reservationRepository.GetListByDate(dateBuilder.ToString()));
+        [HttpGet("/api/reservations/{seanceId}")]
+        public IActionResult GetReservationBySeance(string seanceId){
+            int seanceIdInt = Int32.Parse(seanceId);
+            
+            return Ok(reservationRepository.GetListBySeance(seanceIdInt));
         }
         
     }

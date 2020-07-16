@@ -50,9 +50,9 @@ namespace Repositories
             return _context.Reservations.Include("Schedule").Include("Seat").Include("User").Include(b => b.Schedule.Movie).ToList();
         }
 
-        public List<Reservation> GetListByDate(string date)
+        public List<Reservation> GetListBySeance(int seanceId)
         {
-            return _context.Reservations.Include("Schedule").Include("Seat").Include("User").Include(b => b.Schedule.Movie).Where(a => a.Schedule.Date.Equals(date)).ToList();
+            return _context.Reservations.Include("Schedule").Include("Seat").Include("User").Include(b => b.Schedule.Movie).Where(a => a.Schedule.Id.Equals(seanceId)).ToList();
         }
     }
 }

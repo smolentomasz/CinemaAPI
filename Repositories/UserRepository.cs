@@ -52,7 +52,7 @@ namespace Repositories
             return _context.Users.ToList();
         }
 
-        public UserToken GetUserTokenByEmail(string email, string role, string name, string surname)
+        public UserToken GetUserTokenByEmail(string email, string role, string name, string surname, string id)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
@@ -62,7 +62,8 @@ namespace Repositories
                     new Claim(ClaimTypes.Email, email),
                     new Claim(ClaimTypes.Role, role),
                     new Claim(ClaimTypes.Name, name),
-                    new Claim(ClaimTypes.Surname, surname)
+                    new Claim(ClaimTypes.Surname, surname),
+                    new Claim(ClaimTypes.NameIdentifier, id)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(30),
                 SigningCredentials = new SigningCredentials(
