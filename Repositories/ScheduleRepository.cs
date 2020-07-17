@@ -27,9 +27,22 @@ namespace Repositories
                 return false;   
         }
 
+        public bool FindExistingScheduleByDate(string date)
+        {
+             if(_context.Schedules.ToList().Any(a => a.Date.Equals(date)))
+                return true; 
+            else
+                return false;  
+        }
+
         public List<Schedule> GetList()
         {
             return _context.Schedules.Include("Movie").ToList();
+        }
+
+        public List<Schedule> GetListByDate(string date)
+        {
+            return _context.Schedules.Include("Movie").Where(a => a.Date.Equals(date)).ToList();
         }
 
         public List<Schedule> GetListByMovie(int movieId)

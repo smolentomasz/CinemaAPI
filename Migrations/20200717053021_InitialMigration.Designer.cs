@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CinemaAPI.Migrations
 {
     [DbContext(typeof(CinemaDbContext))]
-    [Migration("20200711115123_InitialMigration")]
+    [Migration("20200717053021_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,12 +49,17 @@ namespace CinemaAPI.Migrations
 
             modelBuilder.Entity("Models.Reservation", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("text");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("Paid")
                         .HasColumnType("integer");
+
+                    b.Property<string>("ReservationUUID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("ScheduleId")
                         .HasColumnType("integer");

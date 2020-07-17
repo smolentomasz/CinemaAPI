@@ -95,5 +95,9 @@ namespace Repositories
             return user;
         }
 
+        public User GetUserById(int id)
+        {
+            return _context.Users.Where(user => user.Id.Equals(id)).Single();
+        }
     }
 }

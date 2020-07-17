@@ -22,16 +22,18 @@ namespace Repositories
             return reservation;
         }
 
-        public void Delete(string id)
+        public void Delete(string uuid)
         {
-            Reservation reservationEntity = _context.Reservations.Where(a => a.Id == id).Single();
-            _context.Reservations.Remove(reservationEntity);
-            _context.SaveChanges();
+            List<Reservation> reservationEntity = _context.Reservations.Where(a => a.ReservationUUID.Equals(uuid)).ToList();
+            foreach (Reservation element in reservationEntity){
+                _context.Reservations.Remove(element);
+                _context.SaveChanges();
+            }    
         }
 
-        public bool FindExistingReservation(string id)
+        public bool FindExistingReservation(string uuid)
         {
-            if(_context.Reservations.ToList().Any(a => a.Id.Equals(id)))
+            if(_context.Reservations.ToList().Any(a => a.ReservationUUID.Equals(uuid)))
                 return true; 
             else
                 return false;   
@@ -53,6 +55,11 @@ namespace Repositories
         public List<Reservation> GetListBySeance(int seanceId)
         {
             return _context.Reservations.Include("Schedule").Include("Seat").Include("User").Include(b => b.Schedule.Movie).Where(a => a.Schedule.Id.Equals(seanceId)).ToList();
+        }
+
+        public List<Reservation> GetListByUserId(int userId)
+        {
+            return _context.Reservations.Include("Schedule").Include("Seat").Include("User").Include(b => b.Schedule.Movie).Where(a => a.UserId.Equals(userId)).ToList();
         }
     }
 }

@@ -31,6 +31,11 @@ namespace Repositories
             return _context.Movies.Where(movie => movie.Name.Equals(name)).Single();
         }
 
+        public Movie GetById(int movieId)
+        {
+            return _context.Movies.Where(movie => movie.Id.Equals(movieId)).Single();
+        }
+
         public List<Movie> GetList()
         {
             return _context.Movies.ToList();

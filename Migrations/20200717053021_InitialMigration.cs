@@ -79,7 +79,9 @@ namespace CinemaAPI.Migrations
                 name: "Reservations",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ReservationUUID = table.Column<string>(nullable: false),
                     Paid = table.Column<int>(nullable: false),
                     ScheduleId = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),

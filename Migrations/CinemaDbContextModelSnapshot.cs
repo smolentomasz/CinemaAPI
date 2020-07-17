@@ -47,12 +47,17 @@ namespace CinemaAPI.Migrations
 
             modelBuilder.Entity("Models.Reservation", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("text");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<int>("Paid")
                         .HasColumnType("integer");
+
+                    b.Property<string>("ReservationUUID")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("ScheduleId")
                         .HasColumnType("integer");

@@ -9,6 +9,8 @@ namespace Repositories
         Schedule Create(Schedule schedule);
         bool FindExistingSchedule(string date, string time);
         List<Schedule> GetListByMovie(int movieId);
+        List<Schedule> GetListByDate(string date);
+        bool FindExistingScheduleByDate(string date);
 
         Schedule GetScheduleById(int scheduleId);
     }

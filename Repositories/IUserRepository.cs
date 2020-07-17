@@ -13,5 +13,6 @@ namespace Repositories
         bool FindByEmail(string email);
         UserToken GetUserTokenByEmail(string email, string password, string name, string surname, string id);
         User GetUserByEmail(string email);
+        User GetUserById(int id);
     }
 }

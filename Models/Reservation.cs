@@ -8,8 +8,9 @@ namespace Models
     {
         [Key]
         [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id {get;set;}
+        public int Id {get;set;}
+        [Required]
+        public string ReservationUUID {get; set;}
         [Required]
         public int Paid {get; set;}
         [Required]
