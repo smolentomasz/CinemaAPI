@@ -12,11 +12,11 @@ namespace Models
         {
             var messageToSend = new MimeMessage
             {
-                Sender = new MailboxAddress("Cinema Centre", "tomasz.smolen@stazysta.comarch.pl"),
+                Sender = new MailboxAddress("Cinema Centre", "mail@mail.pl"),
                 Subject = "Reservation details",
             };
 
-            messageToSend.From.Add(new MailboxAddress("Cinema Centre", "tomasz.smolen@stazysta.comarch.pl"));
+            messageToSend.From.Add(new MailboxAddress("Cinema Centre", "mail@mail.pl"));
 
             if(messageType.Equals("ADD")){
                 StringBuilder seatStringBuilder = new StringBuilder();
@@ -39,8 +39,8 @@ namespace Models
 
             using(var smtp = new MailKit.Net.Smtp.SmtpClient()){
                 smtp.SslProtocols = SslProtocols.Tls;
-                smtp.Connect("smtp.comarch.com", 465);
-                smtp.Authenticate("tomasz.smolen@stazysta.comarch.pl", "MY_SECRET_PASSWORD");
+                smtp.Connect("mail@mail.pl", 465);
+                smtp.Authenticate("mail@mail.pl", "MY_SECRET_PASSWORD");
                 smtp.Send(messageToSend);
             }
         }
